@@ -85,9 +85,9 @@ export default function ChatbotApp() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
+  const [activeHistory, setActiveHistory] = useState(0);
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
-
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });

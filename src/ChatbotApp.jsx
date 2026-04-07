@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 
-// Correct backend endpoint
 const API_URL = "https://chat-backend-production-bba6.up.railway.app/chat";
 
 const SUGGESTIONS = [
@@ -117,7 +116,7 @@ export default function ChatbotApp() {
     } catch (err) {
       setMessages(prev => [...prev, {
         id: Date.now() + 1, role: "bot", isError: true,
-       text: "Could not reach the backend. Please try again.",
+        text: "Could not reach the backend. Make sure FastAPI is running on port 8000.",
       }]);
     } finally {
       setLoading(false);

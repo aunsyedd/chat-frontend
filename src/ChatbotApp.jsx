@@ -104,13 +104,12 @@ export default function ChatbotApp() {
     setLoading(true);
 
     try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userText }),
-      });
-      if (!res.ok) throw new Error(`Server error: ${res.status}`);
-      const data = await res.json();
+const res = await fetch(API_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ message: userText }),
+});
+const data = await res.json();
       if (data.error) throw new Error(data.error);
       setMessages(prev => [...prev, { id: Date.now() + 1, role: "bot", text: data.reply }]);
     } catch (err) {

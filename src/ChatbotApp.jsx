@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const API_URL = "https://chat-backend-production-bba6.up.railway.app/";
+const API_URL = "https://chat-backend-production-bba6.up.railway.app/chat";
 
 const SUGGESTIONS = [
  

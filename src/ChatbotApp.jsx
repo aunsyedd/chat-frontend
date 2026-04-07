@@ -93,13 +93,15 @@ export default function ChatbotApp() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-   const sendMessage = async (text) => {
+  const sendMessage = async (text) => {
     const userText = (text || input).trim();
     if (!userText || loading) return;
     setInput("");
-    if (inputRef.current) inputRef.current.style.height = "auto";
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+    }
 
-    setMessages((prev) => [...prev, { id: Date.now(), role: "user", text: userText }]);
+    setMessages(prev => [...prev, { id: Date.now(), role: "user", text: userText }]);
     setLoading(true);
 
     try {
@@ -108,18 +110,15 @@ export default function ChatbotApp() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userText }),
       });
-
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const data = await res.json();
-
       if (data.error) throw new Error(data.error);
-      setMessages((prev) => [...prev, { id: Date.now() + 1, role: "bot", text: data.reply }]);
+      setMessages(prev => [...prev, { id: Date.now() + 1, role: "bot", text: data.reply }]);
     } catch (err) {
-      console.error(err);
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now() + 1, role: "bot", isError: true, text: "Backend error: " + err.message },
-      ]);
+      setMessages(prev => [...prev, {
+        id: Date.now() + 1, role: "bot", isError: true,
+       text: "Could not reach the backend. Please try again.",
+      }]);
     } finally {
       setLoading(false);
       inputRef.current?.focus();
@@ -127,10 +126,7 @@ export default function ChatbotApp() {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   };
 
   const copyText = (id, text) => {
@@ -142,10 +138,6 @@ export default function ChatbotApp() {
   const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (
-    <div className="chat-app">
-      {/* Your full UI code here (reuse your previous JSX with sidebar, messages, input, etc.) */}
-      {/* Just make sure the textarea calls sendMessage() */}
-    </div>,
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');

@@ -116,7 +116,7 @@ export default function ChatbotApp() {
     } catch (err) {
       setMessages(prev => [...prev, {
         id: Date.now() + 1, role: "bot", isError: true,
-        text: "Could not reach the backend. Make sure FastAPI is running on port 8000.",
+       text: "Could not reach the backend. Please try again.",
       }]);
     } finally {
       setLoading(false);

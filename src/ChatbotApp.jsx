@@ -103,24 +103,26 @@ export default function ChatbotApp() {
     setMessages(prev => [...prev, { id: Date.now(), role: "user", text: userText }]);
     setLoading(true);
 
-    try {
-const res = await fetch(API_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ message: userText }),
-});
-const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      setMessages(prev => [...prev, { id: Date.now() + 1, role: "bot", text: data.reply }]);
-    } catch (err) {
-      setMessages(prev => [...prev, {
-        id: Date.now() + 1, role: "bot", isError: true,
-        text: "Could not reach the backend. Make sure FastAPI is running on port 8000.",
-      }]);
-    } finally {
-      setLoading(false);
-      inputRef.current?.focus();
-    }
+try {
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: userText }),
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  setMessages(prev => [...prev, { id: Date.now() + 1, role: "bot", text: data.reply }]);
+} catch (err) {
+  setMessages(prev => [...prev, {
+    id: Date.now() + 1,
+    role: "bot",
+    isError: true,
+    text: "Could not reach the backend. " + err.message,
+  }]);
+} finally {
+  setLoading(false);
+  inputRef.current?.focus();
+}
   };
 
   const handleKeyDown = (e) => {
